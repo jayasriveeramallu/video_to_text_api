@@ -4,9 +4,12 @@ import tempfile
 from moviepy.editor import VideoFileClip
 
 app = Flask(__name__)
-
+from dotenv import load_dotenv
+load_dotenv()
+import os 
 # Set your AssemblyAI API key
-aai.settings.api_key = "7590999fd9c54440808fafe4e3dcb38b"
+aai.settings.api_key=os.getenv('API_KEY')
+
 transcriber = aai.Transcriber()
 
 def extract_audio_from_video(video_path, audio_path):
@@ -14,7 +17,7 @@ def extract_audio_from_video(video_path, audio_path):
     clip.audio.write_audiofile(audio_path)
     clip.close()
 
-@app.route('/transcribe', methods=['POST'])
+@app.route('/', methods=['POST'])
 def transcribe():
     if request.method == 'POST':
         # Get raw video data from the POST request
